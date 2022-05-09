@@ -1,7 +1,16 @@
+import { ThemeProvider, useTheme } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useSelector } from "react-redux";
 import "./App.css";
 
 function App() {
-  return <div className="App"></div>;
+  const theme = useTheme();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <div className="App"></div>;
+    </ThemeProvider>
+  );
 }
 
 export default App;

@@ -1,50 +1,34 @@
-import { createTheme, useMediaQuery } from "@mui/material";
-import { useMemo } from "react";
+import { createTheme } from "@mui/material/styles";
 
-export const useTheme = () => {
-  const dark = "dark";
+const baseTheme = createTheme({
+  typography: {
+    fontFamily: "'Work Sans', sans-serif",
+    fontSize: 14,
+  },
+});
 
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-
-  const isDark = dark === "dark" || (dark === "follow" && prefersDarkMode);
-
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: isDark ? "dark" : "light",
-          primary: {
-            main: isDark ? "#ffffff" : "#000000",
-          },
-        },
-        components: {
-          MuiPaper: {
-            styleOverrides: {
-              root: {
-                backgroundImage: "unset",
-              },
-            },
-          },
-          MuiCheckbox: {
-            styleOverrides: {
-              root: {
-                color: "var(--primary) !important",
-              },
-            },
-          },
-          MuiSkeleton: {
-            styleOverrides: {
-              rectangular: {
-                borderRadius: "6px",
-              },
-            },
-          },
-        },
-        shape: {
-          borderRadius: 6,
-        },
-      }),
-    [isDark]
-  );
-  return theme;
-};
+const darkTheme = createTheme({
+  ...baseTheme,
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#26a27b",
+    },
+    secondary: {
+      main: "#fafafa",
+    },
+  },
+});
+const lightTheme = createTheme({
+  ...baseTheme,
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#fafafa",
+    },
+    secondary: {
+      main: "#26a27b",
+    },
+  },
+});
+export { darkTheme, lightTheme };

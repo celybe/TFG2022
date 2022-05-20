@@ -1,0 +1,24 @@
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea
+    border: none
+    color: $white
+    font-size: 0.7rem
+    padding: 1rem 0.5rem
+    background-color: $black-200
+    border-radius: 4px 4px 0 0
+    border-bottom: 1px solid $grey-700
+
+    &::-webkit-input-placeholder
+        color: $grey-700
+
+input[type="password"]
+    &:-ms-reveal
+        display: none
+
+input
+    caret-color: $primary-500
+
+    &::selection
+        background-color: $primary-300

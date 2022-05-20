@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "actions/*": ["./actions/*"],
+      "api/*": ["./api/*"],
+      "components/*": ["./components/*"],
+      "containers/*": ["./containers/*"],
+      "reducers/*": ["./reducers/*"],
+      "store/*": ["./store/*"],
+      "tools/*": ["./tools/*"],
+      "vendor/*": ["./vendor/*"],
+      "scss/*": ["./scss/*"],
+      "@types/*": ["./@types/*"],
+      "@hooks/*": ["./@hooks/*"]
+    }
+  }
+}

@@ -1,72 +1,54 @@
-import { FormEvent, useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-
+import axios from "api/axios";
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-/// Props
-export interface ILoginProps {}
+const LOGIN_URL = "/auth";
 
-export interface ILoginState {}
+const Login = () => {
+  const userRef = useRef<any>();
+  const errRef = useRef<any>();
 
-const Login: React.FC<ILoginProps> = (props) => {
-  // State variables
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [checkbox, isChecked] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [isRemember, toggleCheck] = useState(false);
 
-  // Update the message whenever something else is typed
   useEffect(() => {
-    setMessage("");
-  }, [email, password, checkbox]);
+    userRef.current.focus();
+  }, []);
 
-  // Submit the form
-  function save() {
-    if (document.querySelector('[name="rememberMe"]:checked')) {
-      localStorage.email = email;
-      localStorage.password = password;
-      localStorage.checkbox = "true";
+  useEffect(() => {
+    setErrMsg("");
+  }, [username, password]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ username, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+    } catch (err: any) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 400) {
+        setErrMsg("Missing Username or Password");
+      } else if (err.response?.status === 401) {
+        setErrMsg("Unauthorized");
+      } else {
+        setErrMsg("Login Failed");
+      }
+      errRef.current.focus();
     }
-  }
+  };
 
-  return (
-    <div>
-      Login
-      <form className="form--login">
-        <label>
-          Email
-          <input
-            type="email"
-            id="email"
-            autoFocus
-            onChange={(e: FormEvent<HTMLInputElement>) =>
-              setEmail(e.currentTarget.value)
-            }
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            id="password"
-            autoFocus
-            onChange={(e: FormEvent<HTMLInputElement>) =>
-              setPassword(e.currentTarget.value)
-            }
-            required
-          />
-        </label>
-        <label>
-          Remember Password
-          <input type="checkbox" name="rememberMe"></input>
-        </label>
-        <button type="submit" className="btn--login" onClick={save}>
-          Log In
-        </button>
-      </form>
-    </div>
-  );
+  return <div>Login</div>;
 };
 
 export default Login;

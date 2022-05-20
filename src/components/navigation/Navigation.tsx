@@ -82,7 +82,7 @@ export default function Navigation() {
         <Button href="/login" variant="text">
           Login
         </Button>
-        <Button href="/signup" variant="contained">
+        <Button href="/register" variant="contained">
           Sign up
         </Button>
       </div>

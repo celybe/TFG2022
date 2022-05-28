@@ -10,7 +10,7 @@ import Features from "pages/home/Features";
 import Home from "pages/home/Home";
 import Pricing from "pages/home/Pricing";
 import Login from "pages/login/Login";
-import SignUp from "pages/signup/SignUp";
+import Register from "pages/register/Register";
 import "./App.css";
 
 test("renders learn react link", () => {
@@ -24,7 +24,7 @@ test("renders learn react link", () => {
       <Route path="contact" element={<Contact />} />
       <Route path="pricing" element={<Pricing />} />
       <Route path="login" element={<Login />}></Route>
-      <Route path="signup" element={<SignUp />}></Route>
+      <Route path="signup" element={<Register />}></Route>
       {/* We want to protect these routes */}
       {/* catch all */}
       <Route path="*" element={<div>Not found</div>}></Route>

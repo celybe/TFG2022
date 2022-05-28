@@ -1,54 +1,69 @@
-import axios from "api/axios";
-import * as React from "react";
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Grid } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Link,
+  Stack,
+  Image,
+} from "@chakra-ui/react";
+import { Link as ReachLink } from "react-router-dom";
 
-const LOGIN_URL = "/auth";
-
+import img2 from "assets/images/Group.png";
 const Login = () => {
-  const userRef = useRef<any>();
-  const errRef = useRef<any>();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
-  const [isRemember, toggleCheck] = useState(false);
-
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
-
-  useEffect(() => {
-    setErrMsg("");
-  }, [username, password]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ username, password }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-    } catch (err: any) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 400) {
-        setErrMsg("Missing Username or Password");
-      } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
-      } else {
-        setErrMsg("Login Failed");
-      }
-      errRef.current.focus();
-    }
-  };
-
-  return <div>Login</div>;
+  return (
+    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
+      <Flex p={8} flex={1} align={"center"} justify={"center"}>
+        <Stack spacing={4} w={"full"} maxW={"md"}>
+          <Heading fontSize={"2xl"}>Log in</Heading>
+          <FormControl id="email">
+            <FormLabel>Email address</FormLabel>
+            <Input type="email" />
+          </FormControl>
+          <FormControl id="password">
+            <FormLabel>Password</FormLabel>
+            <Input type="password" />
+          </FormControl>
+          <Stack spacing={6}>
+            <Stack
+              direction={{ base: "column", sm: "row" }}
+              align={"start"}
+              justify={"space-between"}
+            >
+              <Checkbox>Remember me</Checkbox>
+              <Link color={"primary"}>Forgot password?</Link>
+            </Stack>
+            <Button
+              as={ReachLink}
+              to="/main"
+              backgroundColor={"primary"}
+              color={"black"}
+              variant={"solid"}
+            >
+              Sign in
+            </Button>
+          </Stack>
+        </Stack>
+      </Flex>
+      <Flex
+        flex={1}
+        backgroundColor={"#0A1418"}
+        borderRadius="4px"
+        height="80vh"
+      >
+        <Image
+          alt={"Login Image"}
+          objectFit={"contain"}
+          align="bottom "
+          src={img2}
+        />
+      </Flex>
+    </Stack>
+  );
 };
 
 export default Login;

@@ -9,9 +9,9 @@ const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = "http://localhost:5000/user";
+const REGISTER_URL = "http://localhost:8000/signup";
 
-const SignUp = () => {
+const Register = () => {
   const userRef = useRef<any>();
   const emailRef = useRef<any>();
   const errRef = useRef<any>();
@@ -75,9 +75,17 @@ const SignUp = () => {
       return;
     }
     try {
+      let user_type = "USER";
       const response = await axios.post(
         REGISTER_URL,
-        JSON.stringify({ firstname, lastname, username, password, email }),
+        JSON.stringify({
+          firstname,
+          lastname,
+          username,
+          password,
+          email,
+          user_type,
+        }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -307,4 +315,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

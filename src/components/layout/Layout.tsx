@@ -1,17 +1,19 @@
-import { Grid } from "@mui/material";
-import About from "pages/home/About";
-import Contact from "pages/home/Contact";
-import Features from "pages/home/Features";
-import Home from "pages/home/Home";
-import Pricing from "pages/home/Pricing";
-import { Outlet, Route, Routes } from "react-router-dom";
-import Navigation from "../navigation/Navigation";
+import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react";
+
+import { Outlet } from "react-router-dom";
+import Navbar from "../navigation/Navbar";
 
 export default function Layout() {
+  const bg = useColorModeValue("white", "dark");
+
   return (
-    <div className="layout-content">
-      <Navigation></Navigation>
-      <Outlet />
-    </div>
+    <Grid className="layout-content" bg={bg} templateColumns="repeat(1, 1fr)">
+      <GridItem>
+        <Navbar />
+      </GridItem>
+      <GridItem>
+        <Outlet />
+      </GridItem>
+    </Grid>
   );
 }

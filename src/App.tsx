@@ -13,7 +13,7 @@ import { ChakraProvider, ColorModeProvider, CSSReset } from "@chakra-ui/react";
 import "./App.css";
 import theme from "theme/Theme";
 import Dashboard from "pages/dashboard/Dashboard";
-import Tasks from "pages/tasks/Tasks";
+import Tasks from "pages/tasks/Board";
 import Calendar from "pages/calendar/Calendar";
 import Main from "pages/main/Main";
 
@@ -32,7 +32,7 @@ const App = () => {
             <Route path="pricing" element={<Pricing />} />
             <Route path="login" element={<Login />}></Route>
             <Route path="register" element={<Register />}></Route>
-            <Route path="main" element={<Main />} />
+            <Route path="main/*" element={<Main />} />
 
             <Route path="*" element={<div>Not found</div>}></Route>
           </Routes>

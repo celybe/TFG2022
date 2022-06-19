@@ -1,20 +1,30 @@
-import { Grid } from "@chakra-ui/react";
+import { Box, Flex, Grid, useColorModeValue } from "@chakra-ui/react";
 import Sidebar from "components/navigation/Sidebar";
 import Calendar from "pages/calendar/Calendar";
 import Dashboard from "pages/dashboard/Dashboard";
-import Tasks from "pages/tasks/Tasks";
+import Editor from "pages/document/Document";
+import Board from "pages/tasks/Board";
 import React from "react";
-import { Outlet, Route } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
+import Preferences from "../preferences/Preferences";
+import Profile from "../profile/Profile";
 
 const Main = () => {
+  const bg4 = useColorModeValue("#ffffff", "#000A0F");
+
   return (
-    <div>
-      <Route path="dashboard" element={<Dashboard />} />
-      <Route path="calendar" element={<Calendar />} />
-      <Route path="task" element={<Tasks />} />
+    <Box display={{ lg: "flex", md: "flex" }}>
       <Sidebar children={undefined} />
       <Outlet />
-    </div>
+      <Routes>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="calendar" element={<Calendar />} />
+        <Route path="tasks" element={<Board />} />
+        <Route path="document" element={<Editor />} />
+        <Route path="preferences" element={<Preferences />} />
+        <Route path="profile" element={<Profile />} />
+      </Routes>
+    </Box>
   );
 };
 

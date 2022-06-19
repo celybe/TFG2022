@@ -1,317 +1,207 @@
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-
-import logo from "assets/images/logo_small.svg";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  FormErrorMessage,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  Grid,
+  Heading,
+  HStack,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Link,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import img1 from "assets/images/img1.png";
-import { Link } from "react-router-dom";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = "http://localhost:8000/signup";
+const REGISTER_URL = "http://localhost:5000/api/";
 
 const Register = () => {
-  const userRef = useRef<any>();
-  const emailRef = useRef<any>();
-  const errRef = useRef<any>();
-
-  const [username, setUser] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
-
-  const [email, setEmail] = useState("");
-  const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [firstname, setFirstName] = useState("");
-  const [validFirstName, setValidFirstName] = useState(false);
-  const [firstNameFocus, setFirstNameFocus] = useState(false);
-
   const [lastname, setLastName] = useState("");
-  const [validLastName, setValidLastName] = useState(false);
-  const [lastNameFocus, setLastNameFocus] = useState(false);
-
-  const [password, setPwd] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
-
-  const [matchPwd, setMatchPwd] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isAgreeNewsletter, setIsAgreeNewsletter] = useState(false);
+  const [isAgreeTerms, setIsAgreeTerms] = useState(false);
 
   const [errMsg, setErrMsg] = useState("");
+
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
+  const isError = username.length > 1;
 
-  useEffect(() => {
-    setValidName(USER_REGEX.test(username));
-  }, [username]);
-
-  useEffect(() => {
-    setValidPwd(PWD_REGEX.test(password));
-    setValidMatch(password === matchPwd);
-  }, [password, matchPwd]);
-
-  useEffect(() => {
-    setValidEmail(EMAIL_REGEX.test(email));
-  }, [email]);
-
-  useEffect(() => {
-    setErrMsg("");
-  }, [username, password, matchPwd]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // if button enabled with JS hack
-    const v1 = USER_REGEX.test(username);
-    const v2 = PWD_REGEX.test(password);
-    const v3 = EMAIL_REGEX.test(email);
-    if (!v1 || !v2 || !v3) {
-      setErrMsg("Invalid Entry");
-      return;
-    }
+  const handleUsernameChange = async (e) => {
     try {
-      let user_type = "USER";
-      const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify({
-          firstname,
-          lastname,
-          username,
-          password,
-          email,
-          user_type,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+      setUsername(e);
+      let usr: string = e;
+      const url = "http://localhost:5000/api/auth/check/username/" + usr;
+      console.log(url);
+      axios.get(url).then((res) => {
+        const v1 = USER_REGEX.test(e);
+        if (v1) {
+          setErrMsg("");
+          if (res.data.ok) {
+            setErrMsg("");
+          } else {
+            setErrMsg("Username Already Exists");
+          }
+        } else {
+          setErrMsg("Invalid Username");
         }
-      );
-      console.log(JSON.stringify(response?.data));
-      setSuccess(true);
-      //clear state and controlled inputs
-      //need value attrib on inputs for this
-      setUser("");
-      setPwd("");
-      setMatchPwd("");
+      });
     } catch (err: any) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
-      } else {
-        setErrMsg("Registration Failed");
-      }
-      errRef.current.focus();
+      console.log(err);
     }
   };
 
   return (
-    <div className="register--container">
-      <div className="register--right">
-        <h6 className="text">
-          “Make each <br /> day your
-          <br /> masterpiece”
-        </h6>
-        <img className="img1" src={img1} alt="logo" />
-      </div>
-      <div className="register--left">
-        {success ? (
-          <section className="register--success">
-            <h1>Success!</h1>
-            <p>
-              <a href="#">Sign In</a>
-            </p>
-          </section>
-        ) : (
-          <section className="register--content">
-            <img className="logo" src={logo} alt="logo" />
+    <Grid w="100vw" h="100vh">
+      <Grid className="register--container" templateColumns="50vw 50vw">
+        <Grid className="register--right">
+          <Heading className="4xl">
+            MAKE EACH <br /> DAY YOUR
+            <br /> MASTERPIECE
+          </Heading>
+          <img className="img1" src={img1} alt="logo" />
+        </Grid>
+        <Grid className="register--left">
+          <Flex minH={"100vh"} align={"center"} justify={"center"}>
+            <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+              <Stack align={"center"}>
+                <Heading fontSize={"4xl"} textAlign={"center"}>
+                  Sign up
+                </Heading>
+                <Text fontSize={"lg"} color={"gray.600"}>
+                  Enter your credentials to access your account ✌️
+                </Text>
+              </Stack>
+              <Box rounded={"lg"} boxShadow={"lg"} p={8}>
+                <Stack spacing={4}>
+                  <HStack>
+                    <Box>
+                      <FormControl id="firstName" isRequired>
+                        <FormLabel>First Name</FormLabel>
+                        <Input type="text" />
+                      </FormControl>
+                    </Box>
+                    <Box>
+                      <FormControl id="lastName" isRequired>
+                        <FormLabel>Last Name</FormLabel>
+                        <Input type="text" />
+                      </FormControl>
+                    </Box>
+                  </HStack>
+                  <HStack>
+                    <Box>
+                      <FormControl id="username" isInvalid={isError} isRequired>
+                        <FormLabel>Username</FormLabel>
+                        <Input
+                          value={username}
+                          id="username"
+                          onChange={(e) => handleUsernameChange(e.target.value)}
+                        />
+                        {errMsg !== "" ? (
+                          <FormErrorMessage>{errMsg}</FormErrorMessage>
+                        ) : null}
+                      </FormControl>
+                    </Box>
+                    <Box>
+                      <FormControl id="email" isRequired>
+                        <FormLabel>Email</FormLabel>
+                        <Input type="text" />
+                      </FormControl>
+                    </Box>
+                  </HStack>
+                  <HStack>
+                    <FormControl id="password" isRequired>
+                      <FormLabel>Password</FormLabel>
+                      <InputGroup>
+                        <Input type={showPassword ? "text" : "password"} />
+                        <InputRightElement h={"full"}>
+                          <Button
+                            variant={"ghost"}
+                            onClick={() =>
+                              setShowPassword((showPassword) => !showPassword)
+                            }
+                          >
+                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </FormControl>
+                    <FormControl id="Confirmpassword" isRequired>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <InputGroup>
+                        <Input type={showPassword ? "text" : "password"} />
+                        <InputRightElement h={"full"}>
+                          <Button
+                            variant={"ghost"}
+                            onClick={() =>
+                              setShowPassword((showPassword) => !showPassword)
+                            }
+                          >
+                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                          </Button>
+                        </InputRightElement>
+                      </InputGroup>
+                    </FormControl>
+                  </HStack>
+                  <Stack>
+                    <Checkbox>
+                      <Text>Yes, I want to receive Codenotes emails.</Text>
+                    </Checkbox>
+                    <Checkbox>
+                      <Text>
+                        I agree with all Terms and Conditions and Privacy
+                        Policies of Codenotes
+                      </Text>
+                    </Checkbox>
+                  </Stack>
 
-            <p
-              ref={errRef}
-              className={errMsg ? "errmsg" : "offscreen"}
-              aria-live="assertive"
-            >
-              {errMsg}
-            </p>
-            <h3>
-              Sign up as <br />
-              <span>Codenotes</span>
-            </h3>
-            <p>Enter your credentials to access your account</p>
-            <form onSubmit={handleSubmit}>
-              <div className="inputs--container">
-                <div className="inputs--container--left">
-                  <label htmlFor="username"></label>
-                  <input
-                    type="text"
-                    id="username"
-                    placeholder="Username"
-                    ref={userRef}
-                    className={validName ? "valid" : "invalid"}
-                    autoComplete="off"
-                    onChange={(e) => setUser(e.target.value)}
-                    value={username}
-                    required
-                    aria-invalid={validName ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setUserFocus(true)}
-                    onBlur={() => setUserFocus(false)}
-                  />
-                  <p
-                    id="uidnote"
-                    className={
-                      userFocus && username && !validName
-                        ? "instructions"
-                        : "offscreen"
-                    }
-                  >
-                    4 to 24 characters.
-                    <br />
-                    Must begin with a letter.
-                    <br />
-                    Letters, numbers, underscores, hyphens allowed.
-                  </p>
-
-                  <label htmlFor="firstname"></label>
-                  <input
-                    type="text"
-                    id="firstname"
-                    placeholder="First name"
-                    onChange={(e) => setFirstName(e.target.value)}
-                    value={firstname}
-                    required
-                    className={validFirstName ? "valid" : "invalid"}
-                    aria-invalid={validFirstName ? "false" : "true"}
-                    aria-describedby="pwdnote"
-                    onFocus={() => setFirstNameFocus(true)}
-                    onBlur={() => setFirstNameFocus(false)}
-                  />
-
-                  <label htmlFor="password"></label>
-                  <input
-                    type="password"
-                    id="password"
-                    placeholder="Password"
-                    onChange={(e) => setPwd(e.target.value)}
-                    value={password}
-                    required
-                    className={validPwd ? "valid" : "invalid"}
-                    aria-invalid={validPwd ? "false" : "true"}
-                    aria-describedby="pwdnote"
-                    onFocus={() => setPwdFocus(true)}
-                    onBlur={() => setPwdFocus(false)}
-                  />
-                  <p
-                    id="pwdnote"
-                    className={
-                      pwdFocus && !validPwd ? "instructions" : "offscreen"
-                    }
-                  >
-                    8 to 24 characters.
-                    <br />
-                    Must include uppercase and lowercase letters, a number and a
-                    special character.
-                    <br />
-                    Allowed special characters:{" "}
-                    <span aria-label="exclamation mark">!</span>{" "}
-                    <span aria-label="at symbol">@</span>{" "}
-                    <span aria-label="hashtag">#</span>{" "}
-                    <span aria-label="dollar sign">$</span>{" "}
-                    <span aria-label="percent">%</span>
-                  </p>
-                </div>
-                <div className="inputs--container--right">
-                  <label htmlFor="email"></label>
-                  <input
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    ref={emailRef}
-                    className={validEmail ? "valid" : "invalid"}
-                    autoComplete="off"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    required
-                    aria-invalid={validEmail ? "false" : "true"}
-                    aria-describedby="uiemail"
-                    onFocus={() => setEmailFocus(true)}
-                    onBlur={() => setEmailFocus(false)}
-                  />
-                  <p
-                    id="uiemail"
-                    className={
-                      emailFocus && email && !validEmail
-                        ? "instructions"
-                        : "offscreen"
-                    }
-                  >
-                    4 to 24 characters.
-                    <br />
-                    Must begin with a letter.
-                    <br />
-                    Letters, numbers, underscores, hyphens allowed.
-                  </p>
-
-                  <label htmlFor="lastname"></label>
-                  <input
-                    type="text"
-                    id="lastname"
-                    placeholder="Lastname"
-                    onChange={(e) => setLastName(e.target.value)}
-                    value={lastname}
-                    required
-                    aria-describedby="lastName"
-                    onFocus={() => setLastNameFocus(true)}
-                    onBlur={() => setLastNameFocus(false)}
-                  />
-
-                  <label htmlFor="confirm_pwd"></label>
-                  <input
-                    type="password"
-                    id="confirm_pwd"
-                    placeholder="Confirm Password"
-                    onChange={(e) => setMatchPwd(e.target.value)}
-                    value={matchPwd}
-                    required
-                    className={validMatch && matchPwd ? "valid" : "invalid"}
-                    aria-invalid={validMatch ? "false" : "true"}
-                    aria-describedby="confirmnote"
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
-                  />
-                  <p
-                    id="confirmnote"
-                    className={
-                      matchFocus && !validMatch ? "instructions" : "offscreen"
-                    }
-                  >
-                    Must match the first password input field.
-                  </p>
-                </div>
-              </div>
-
-              <button
-                disabled={!validName || !validPwd || !validMatch ? true : false}
-              >
-                Sign Up
-              </button>
-            </form>
-            <p>
-              Already have an account?
-              <span className="line">
-                {/*put router link here*/}
-                <Link to="/login"> Log in</Link>
-              </span>
-            </p>
-          </section>
-        )}
-      </div>
-    </div>
+                  <Stack spacing={10} pt={2}>
+                    <Button
+                      loadingText="Submitting"
+                      size="lg"
+                      bg={"#00D4A1"}
+                      color={"white"}
+                      _hover={{
+                        bg: "blue.500",
+                      }}
+                    >
+                      Sign up
+                    </Button>
+                  </Stack>
+                  <Stack pt={6}>
+                    <Text align={"center"}>
+                      Already a user? <Link color={"#00D4A1"}>Login</Link>
+                    </Text>
+                  </Stack>
+                </Stack>
+              </Box>
+            </Stack>
+          </Flex>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 

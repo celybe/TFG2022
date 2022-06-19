@@ -2,6 +2,8 @@ import React, { ElementType, ReactNode, ReactText } from "react";
 import { MdDashboard } from "react-icons/md";
 import { MdCalendarToday } from "react-icons/md";
 import { MdOutlineChecklist } from "react-icons/md";
+import { MdInsertDriveFile } from "react-icons/md";
+
 import {
   IconButton,
   Box,
@@ -17,6 +19,7 @@ import {
   BoxProps,
   FlexProps,
   Avatar,
+  Spacer,
 } from "@chakra-ui/react";
 import { Link as ReachLink } from "react-router-dom";
 
@@ -29,23 +32,33 @@ const LinkItems: Array<LinkItemProps> = [
   {
     name: "Dashboard",
     icon: <Icon as={MdDashboard} w={5} h={5} />,
-    path: "/dashboard",
+    path: "dashboard",
+  },
+  {
+    name: "Preferences",
+    icon: <Icon as={MdDashboard} w={5} h={5} />,
+    path: "preferences",
   },
   {
     name: "Calendar",
     icon: <Icon as={MdCalendarToday} w={5} h={5} />,
-    path: "/calendar",
+    path: "calendar",
   },
   {
     name: "Tasks",
     icon: <Icon as={MdOutlineChecklist} w={5} h={5} />,
-    path: "/tasks",
+    path: "tasks",
+  },
+  {
+    name: "Document",
+    icon: <Icon as={MdInsertDriveFile} w={5} h={5} />,
+    path: "document",
   },
 ];
 const Sidebar = ({ children }: { children: ReactNode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -65,9 +78,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
+      <Box ml={{ base: 0, md: 60 }}>{children}</Box>
     </Box>
   );
 };
@@ -81,12 +92,10 @@ interface SidebarProps extends BoxProps {
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
-      bg={useColorModeValue("white", "gray.900")}
-      borderRight="1px"
-      borderRightColor={useColorModeValue("gray.200", "gray.700")}
+      bg={useColorModeValue("white", "#001014")}
       w={{ base: "full", md: 60 }}
       pos="fixed"
-      h="full"
+      h="100%"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
@@ -121,11 +130,11 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
         align="center"
         p="4"
         mx="4"
-        borderRadius="lg"
+        borderRadius="4px"
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "cyan.400",
+          bg: "#091E1F",
           color: "white",
         }}
         {...rest}
@@ -146,19 +155,20 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       px={{ base: 4, md: 24 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
+      bg={useColorModeValue("white", "#091E1F")}
       borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent="flex-start"
+      borderBottomColor={useColorModeValue("gray.200", "#091E1F")}
       {...rest}
     >
       <IconButton
         variant="outline"
         onClick={onOpen}
         aria-label="open menu"
+        border="0px"
+        _hover={{ bg: "transparent" }}
         icon={<Icon as={MdDashboard} w={5} h={5} />}
       />
-
+      <Spacer />
       <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
     </Flex>
   );

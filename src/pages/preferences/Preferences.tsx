@@ -15,6 +15,6 @@ export default class Preferences extends React.Component<
   }
 
   public render() {
-    return <div></div>;
+    return <div>Preferences</div>;
   }
 }

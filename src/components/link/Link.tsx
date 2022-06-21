@@ -1,6 +1,5 @@
-import React from "react";
-import { Link as RouterLink, To } from "react-router-dom";
 import { Link as ChakraLink, useColorModeValue } from "@chakra-ui/react";
+import { Link as RouterLink, To } from "react-router-dom";
 type Props = {
   label: string;
   path: To;

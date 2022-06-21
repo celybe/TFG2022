@@ -1,13 +1,6 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Box,
-  FormErrorMessage,
   Button,
   Checkbox,
   Flex,
@@ -22,8 +15,11 @@ import {
   Link,
   Stack,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import img1 from "assets/images/img1.png";
+import axios from "axios";
+import { useState } from "react";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -47,34 +43,25 @@ const Register = () => {
 
   const [success, setSuccess] = useState(false);
 
-  const isError = username.length > 1;
-
-  const handleUsernameChange = async (e) => {
+  const create = async () => {
     try {
-      setUsername(e);
-      let usr: string = e;
-      const url = "http://localhost:5000/api/auth/check/username/" + usr;
+      const url = "http://localhost:5000/api/users/";
       console.log(url);
-      axios.get(url).then((res) => {
-        const v1 = USER_REGEX.test(e);
-        if (v1) {
-          setErrMsg("");
-          if (res.data.ok) {
-            setErrMsg("");
-          } else {
-            setErrMsg("Username Already Exists");
-          }
-        } else {
-          setErrMsg("Invalid Username");
-        }
+      const res = await axios.post(url, {
+        Username: username,
+        Email: email,
+        Password: password,
+        First_Name: firstname,
+        Last_Name: lastname,
       });
     } catch (err: any) {
       console.log(err);
     }
   };
+  const bg = useColorModeValue("#ffffff", "#000A0F");
 
   return (
-    <Grid w="100vw" h="100vh">
+    <Grid w="100vw" h="100vh" bg={bg}>
       <Grid className="register--container" templateColumns="50vw 50vw">
         <Grid className="register--right">
           <Heading className="4xl">
@@ -112,16 +99,9 @@ const Register = () => {
                   </HStack>
                   <HStack>
                     <Box>
-                      <FormControl id="username" isInvalid={isError} isRequired>
+                      <FormControl id="username" isRequired>
                         <FormLabel>Username</FormLabel>
-                        <Input
-                          value={username}
-                          id="username"
-                          onChange={(e) => handleUsernameChange(e.target.value)}
-                        />
-                        {errMsg !== "" ? (
-                          <FormErrorMessage>{errMsg}</FormErrorMessage>
-                        ) : null}
+                        <Input value={username} type="text" />
                       </FormControl>
                     </Box>
                     <Box>
@@ -186,6 +166,7 @@ const Register = () => {
                       _hover={{
                         bg: "blue.500",
                       }}
+                      onClick={() => create()}
                     >
                       Sign up
                     </Button>

@@ -3,7 +3,7 @@ import Sidebar from "components/navigation/Sidebar";
 import Calendar from "pages/calendar/Calendar";
 import Dashboard from "pages/dashboard/Dashboard";
 import Editor from "pages/document/Document";
-import Board from "pages/tasks/Board";
+import MyBoard from "pages/tasks/Board";
 import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Preferences from "../preferences/Preferences";
@@ -19,7 +19,7 @@ const Main = () => {
       <Routes>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="calendar" element={<Calendar />} />
-        <Route path="tasks" element={<Board />} />
+        <Route path="tasks" element={<MyBoard />} />
         <Route path="document" element={<Editor />} />
         <Route path="preferences" element={<Preferences />} />
         <Route path="profile" element={<Profile />} />

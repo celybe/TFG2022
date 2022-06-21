@@ -1,8 +1,5 @@
-import { Grid, GridItem, Heading } from "@chakra-ui/react";
-import GlobalContext from "context/GlobalContext";
-import dayjs from "dayjs";
-import { get } from "http";
-import React, { useContext } from "react";
+import { Grid } from "@chakra-ui/react";
+import React from "react";
 import Day from "./Day";
 
 let num = 0;

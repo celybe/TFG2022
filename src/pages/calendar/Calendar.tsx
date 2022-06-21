@@ -42,7 +42,7 @@ const Calendar = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const bg = useColorModeValue("#ffffff", "#000A0F");
   const bg2 = useColorModeValue("#000A0F", "#ffffff");

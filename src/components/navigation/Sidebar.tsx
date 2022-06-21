@@ -20,8 +20,11 @@ import {
   FlexProps,
   Avatar,
   Spacer,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Link as ReachLink } from "react-router-dom";
+import AvatarIcon from "assets/icons/Avatar";
+import ThemeToggle from "components/toggle/ThemeToggle";
 
 interface LinkItemProps {
   name: string;
@@ -33,11 +36,6 @@ const LinkItems: Array<LinkItemProps> = [
     name: "Dashboard",
     icon: <Icon as={MdDashboard} w={5} h={5} />,
     path: "dashboard",
-  },
-  {
-    name: "Preferences",
-    icon: <Icon as={MdDashboard} w={5} h={5} />,
-    path: "preferences",
   },
   {
     name: "Calendar",
@@ -57,6 +55,7 @@ const LinkItems: Array<LinkItemProps> = [
 ];
 const Sidebar = ({ children }: { children: ReactNode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Box>
       <SidebarContent
@@ -92,15 +91,15 @@ interface SidebarProps extends BoxProps {
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
-      bg={useColorModeValue("white", "#001014")}
+      bg={useColorModeValue("#F6FEFF", "#001014")}
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="100%"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-
+        <Avatar icon={<AvatarIcon />} />
+        <ThemeToggle />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
@@ -169,7 +168,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<Icon as={MdDashboard} w={5} h={5} />}
       />
       <Spacer />
-      <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+      <Avatar icon={<AvatarIcon />} />
     </Flex>
   );
 };

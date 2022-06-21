@@ -2,26 +2,26 @@ import logo from "assets/images/logo.svg";
 import ThemeToggle from "components/toggle/ThemeToggle";
 
 import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  CloseIcon,
+  HamburgerIcon,
+} from "@chakra-ui/icons";
+import {
   Box,
-  Text,
   Collapse,
   Flex,
   Icon,
   IconButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Stack,
-  useDisclosure,
   Link,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Stack,
+  Text,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  CloseIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from "@chakra-ui/icons";
 import { Link as ReachLink } from "react-router-dom";
 
 export default function Navbar() {
@@ -29,7 +29,8 @@ export default function Navbar() {
   const bg = useColorModeValue("#00D4A1", "#00FFC1");
   const bgHover = useColorModeValue("#00FFC1", "#00D4A1");
   const bgActive = useColorModeValue("#00D4A1", "#00FFC1");
-  const textColor = useColorModeValue("white", "dark");
+  const textColor = useColorModeValue("#ffffff", "#000000");
+  const textColor2 = useColorModeValue("#000000", "#ffffff");
 
   return (
     <Box>
@@ -64,7 +65,12 @@ export default function Navbar() {
             <ThemeToggle />
           </Flex>
 
-          <Link as={ReachLink} to="/login" color={bg}>
+          <Link
+            as={ReachLink}
+            to="/login"
+            colorScheme={"teal"}
+            color={textColor2}
+          >
             Login
           </Link>
           <Link
@@ -74,20 +80,10 @@ export default function Navbar() {
             backgroundColor={bg}
             border="none"
             borderRadius="4px"
+            colorScheme="teal"
             color={textColor}
             py={1}
             px={4}
-            _hover={{
-              bg: { bgHover },
-            }}
-            _active={{
-              bg: { bgActive },
-              transform: "scale(0.98)",
-              borderColor: { bgHover },
-            }}
-            _focus={{
-              boxShadow: "0 0 1px 2px #00D4A1, 0 1px 1px rgba(0, 0, 0, .15)",
-            }}
             whiteSpace="nowrap"
           >
             Sign Up

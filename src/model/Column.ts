@@ -1,5 +1,7 @@
-export interface Column  {
-    _id: string,
-    title: string,
-    taskIds: [string]
-};
+import { Task } from "./Task";
+
+export interface Column {
+  _id: string;
+  Name: string;
+  Items: [Task];
+}

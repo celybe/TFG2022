@@ -10,13 +10,16 @@ import {
   Link,
   Stack,
   Image,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Link as ReachLink } from "react-router-dom";
 
 import img2 from "assets/images/Group.png";
 const Login = () => {
+  const bg = useColorModeValue("#ffffff", "#000A0F");
+
   return (
-    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
+    <Stack minH={"100vh"} direction={{ base: "column", md: "row" }} bg={bg}>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
         <Stack spacing={4} w={"full"} maxW={"md"}>
           <Heading fontSize={"2xl"}>Log in</Heading>
@@ -35,12 +38,12 @@ const Login = () => {
               justify={"space-between"}
             >
               <Checkbox>Remember me</Checkbox>
-              <Link color={"primary"}>Forgot password?</Link>
+              <Link colorScheme={"teal"}>Forgot password?</Link>
             </Stack>
             <Button
               as={ReachLink}
               to="/main"
-              backgroundColor={"primary"}
+              colorScheme={"teal"}
               color={"black"}
               variant={"solid"}
             >

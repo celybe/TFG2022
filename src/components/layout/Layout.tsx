@@ -1,8 +1,10 @@
 import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react";
 
-import { Outlet } from "react-router-dom";
+import About from "pages/home/About";
+import Features from "pages/home/Features";
+import Home from "pages/home/Home";
+import { Route, Routes } from "react-router-dom";
 import Navbar from "../navigation/Navbar";
-
 export default function Layout() {
   const bg4 = useColorModeValue("#ffffff", "#000A0F");
   return (
@@ -11,8 +13,12 @@ export default function Layout() {
         <Navbar />
       </GridItem>
       <GridItem>
-        <Outlet />
+        <Home />
       </GridItem>
+      <Routes>
+        <Route path="features" element={<Features />} />
+        <Route path="about" element={<About />} />
+      </Routes>
     </Grid>
   );
 }

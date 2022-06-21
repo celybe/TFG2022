@@ -12,6 +12,7 @@ import Main from "pages/main/Main";
 import theme from "theme/Theme";
 import "./App.css";
 
+const App = () => {
   return (
     <ChakraProvider theme={theme}>
       <ColorModeProvider>
